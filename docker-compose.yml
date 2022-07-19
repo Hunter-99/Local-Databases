@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  db:
+  postgres:
     image: postgres:latest
     restart: always
     env_file:
@@ -12,3 +12,23 @@ services:
       - "5432:5432"
     extra_hosts:
       - "host.docker.internal:172.17.0.1"
+
+  clickhouse_server:
+    image: yandex/clickhouse-server
+    restart: always
+    ports:
+      - "8123:8123"
+    env_file:
+      - docker-compose.env
+    volumes:
+      - .clickhouse_data:/var/lib/clickhouse
+    extra_hosts:
+      - "host.docker.internal:10.0.10.120"
+
+  clickhouse_client:
+      image: yandex/clickhouse-client
+      entrypoint:
+        - /bin/sleep
+      command:
+        - infinity
+
