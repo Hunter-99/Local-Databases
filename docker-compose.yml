@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:latest
+    restart: always
+    env_file:
+      - docker-compose.env
+    volumes:
+      - .postgres_data:/var/lib/postgresql/data/
+    ports:
+      - "5432:5432"
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"
